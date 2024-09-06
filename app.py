@@ -1,4 +1,3 @@
-import os
 import streamlit as st
 import pandas as pd
 from io import BytesIO
@@ -8,6 +7,7 @@ from openpyxl import load_workbook
 import hashlib
 
 st.title('Excel Wizard')
+
 
 # Function to split an Excel file into separate files for each sheet with formatting
 def split_excel(file):
@@ -41,6 +41,7 @@ def split_excel(file):
     output.seek(0)
     return output
 
+
 # Function to merge (union) multiple Excel files into separate sheets within one Excel file
 def merge_excels(files):
     combined_output = BytesIO()
@@ -72,9 +73,13 @@ def merge_excels(files):
     combined_output.seek(0)
     return combined_output
 
+
 # File upload options
 st.sidebar.title("Excel Wizard Options")
 option = st.sidebar.radio("Choose an action", ('Split Excel by Sheets', 'Merge Excel Files'))
+
+# Download location input
+download_location = st.text_input("Enter download location (optional)", "")
 
 # Split Excel File
 if option == 'Split Excel by Sheets':
@@ -87,27 +92,14 @@ if option == 'Split Excel by Sheets':
         split_result = split_excel(uploaded_file)
         loading_icon.empty()  # Clear the loading icon after processing
 
-        # Add the download button after processing is complete
-        download_path = st.text_input("Enter Download Path (optional)", key="download_path")
-        default_download_path = "downloads"  # Adjust as needed
-
-        if download_path:
-            # Use user-provided path
-            full_file_path = os.path.join(download_path, "split_sheets.zip")
-
-            # Create the directory if it doesn't exist
-            if not os.path.exists(os.path.dirname(full_file_path)):
-                os.makedirs(os.path.dirname(full_file_path))
-
-            with open(full_file_path, "wb") as f:
-                f.write(split_result.getvalue())  # Extract bytes from BytesIO object
-
-            st.success(f"File downloaded to: {full_file_path}")
+        # Define download path based on user input or default
+        if download_location:
+            download_path = download_location + "/split_sheets.zip"
         else:
-            # Use default behavior (explained in solution 1)
-            download_button = st.download_button(
-                "Download Split Files (ZIP)", data=split_result, file_name="split_sheets.zip"
-            )
+            download_path = "split_sheets.zip"
+
+        # Add the download button after processing is complete
+        download_button = st.download_button("Download Split Files (ZIP)", data=split_result, file_name=download_path)
 
 # Merge Excel Files
 elif option == 'Merge Excel Files':
@@ -120,24 +112,11 @@ elif option == 'Merge Excel Files':
         merged_result = merge_excels(uploaded_files)
         loading_icon.empty()  # Clear the loading icon after processing
 
-        # Add the download button after processing is complete
-        download_path = st.text_input("Enter Download Path (optional)", key="download_path")
-        default_download_path = "downloads"  # Adjust as needed
-
-        if download_path:
-            # Use user-provided path
-            full_file_path = os.path.join(download_path, "merged_file.xlsx")
-
-            # Create the directory if it doesn't exist
-            if not os.path.exists(os.path.dirname(full_file_path)):
-                os.makedirs(os.path.dirname(full_file_path))
-
-            with open(full_file_path, "wb") as f:
-                f.write(merged_result.getvalue())  # Extract bytes from BytesIO object
-
-            st.success(f"File downloaded to: {full_file_path}")
+        # Define download path based on user input or default
+        if download_location:
+            download_path = download_location + "/merged_file.xlsx"
         else:
-            # Use default behavior (explained in solution 1)
-            download_button = st.download_button(
-                "Download Merged File", data=merged_result, file_name="merged_file.xlsx"
-            )
+            download_path = "merged_file.xlsx"
+
+        # Add the download button after processing is complete
+        download_button = st.download_button("Download Merged File", data=merged_result, file_name=download_path)
