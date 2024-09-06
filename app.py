@@ -93,21 +93,16 @@ if option == 'Split Excel by Sheets':
 
         if download_path:
             # Use user-provided path
-            download_button = st.download_button(
-                "Download Split Files (ZIP)", data=split_result, file_name="split_sheets.zip", key="download_button"
-            )
+            full_file_path = os.path.join(download_path, "split_sheets.zip")
+            with open(full_file_path, "wb") as f:
+                f.write(split_result)
+
+            st.success(f"File downloaded to: {full_file_path}")
         else:
-            # Use default path
-            if not os.path.exists(default_download_path):
-                os.makedirs(default_download_path)  # Create directory if it doesn't exist
+            # Use default behavior (explained in solution 1)
             download_button = st.download_button(
-                "Download Split Files (ZIP)",
-                data=split_result,
-                file_name="split_sheets.zip",
-                key="download_button",
+                "Download Split Files (ZIP)", data=split_result, file_name="split_sheets.zip"
             )
-            # Update file path with default path
-            download_button.path = os.path.join(default_download_path, download_button.file_name)
 
 # Merge Excel Files
 elif option == 'Merge Excel Files':
@@ -126,18 +121,13 @@ elif option == 'Merge Excel Files':
 
         if download_path:
             # Use user-provided path
-            download_button = st.download_button(
-                "Download Merged File", data=merged_result, file_name="merged_file.xlsx", key="download_button"
-            )
+            full_file_path = os.path.join(download_path, "merged_file.xlsx")
+            with open(full_file_path, "wb") as f:
+                f.write(merged_result)
+
+            st.success(f"File downloaded to: {full_file_path}")
         else:
-            # Use default path
-            if not os.path.exists(default_download_path):
-                os.makedirs(default_download_path)  # Create directory if it doesn't exist
+            # Use default behavior (explained in solution 1)
             download_button = st.download_button(
-                "Download Merged File",
-                data=merged_result,
-                file_name="merged_file.xlsx",
-                key="download_button",
+                "Download Merged File", data=merged_result, file_name="merged_file.xlsx"
             )
-            # Update file path with default path
-            download_button.path = os.path.join(default_download_path, download_button.file_name)
