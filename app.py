@@ -87,7 +87,7 @@ if option == 'Split Excel by Sheets':
         loading_icon.markdown("**Processing...** (Please wait)")
 
         split_result = split_excel(uploaded_file)
-        loading_icon.empty()  # Clear the loading icon after processing
+        loading_icon.empty()  # Clear the clicking icon after processing
 
         # Get user-defined download path
         download_path = st.text_input("Enter Download Path (optional)", key="download_path")
@@ -96,4 +96,4 @@ if option == 'Split Excel by Sheets':
         if download_path:
             download_button = st.download_button("Download Split Files (ZIP)", data=split_result, file_name="split_sheets.zip", file_path=download_path)
         else:
-            download_button = st.download_button("Download Split Files (ZIP)", data=split_result, file_name
+            download_button = st.download_button("Download Split Files (ZIP)", data=split_result, file_name="split_sheets.
