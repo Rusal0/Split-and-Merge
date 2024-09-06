@@ -101,7 +101,8 @@ if option == 'Split Excel by Sheets':
             try:
                 os.makedirs(download_path, exist_ok=True)  # Create the directory if it doesn't exist
                 with open(os.path.join(download_path, "split_sheets.zip"), 'wb') as f:
-                    f.write(split_result)
+                    # Write the contents of the BytesIO object to the file
+                    f.write(split_result.getvalue())
                 st.success("Split files saved to the specified path.")
             except Exception as e:
                 st.error(f"Error saving files to {download_path}: {str(e)}")
@@ -128,7 +129,8 @@ elif option == 'Merge Excel Files':
             try:
                 os.makedirs(download_path, exist_ok=True)  # Create the directory if it doesn't exist
                 with open(os.path.join(download_path, "merged_file.xlsx"), 'wb') as f:
-                    f.write(merged_result)
+                    # Write the contents of the BytesIO object to the file
+                    f.write(merged_result.getvalue())
                 st.success("Merged file saved to the specified path.")
             except Exception as e:
                 st.error(f"Error saving file to {download_path}: {str(e)}")
