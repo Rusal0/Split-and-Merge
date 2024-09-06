@@ -79,7 +79,7 @@ st.sidebar.title("Excel Wizard Options")
 option = st.sidebar.radio("Choose an action", ('Split Excel by Sheets', 'Merge Excel Files'))
 
 # Download location input
-download_location = st.text_input("Enter download location (optional)", "")
+download_location = st.text_input("Enter download location:")
 
 # Split Excel File
 if option == 'Split Excel by Sheets':
@@ -98,8 +98,11 @@ if option == 'Split Excel by Sheets':
         else:
             download_path = "split_sheets.zip"
 
-        # Add the download button after processing is complete
-        download_button = st.download_button("Download Split Files (ZIP)", data=split_result, file_name=download_path)
+        # Automatically download the file to the specified location
+        with open(download_path, 'wb') as f:
+            f.write(split_result)
+
+        st.success("File downloaded successfully to: " + download_path)
 
 # Merge Excel Files
 elif option == 'Merge Excel Files':
@@ -118,5 +121,8 @@ elif option == 'Merge Excel Files':
         else:
             download_path = "merged_file.xlsx"
 
-        # Add the download button after processing is complete
-        download_button = st.download_button("Download Merged File", data=merged_result, file_name=download_path)
+        # Automatically download the file to the specified location
+        with open(download_path, 'wb') as f:
+            f.write(merged_result)
+
+        st.success("File downloaded successfully to: " + download_path)
