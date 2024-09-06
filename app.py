@@ -96,4 +96,24 @@ if option == 'Split Excel by Sheets':
         if download_path:
             download_button = st.download_button("Download Split Files (ZIP)", data=split_result, file_name="split_sheets.zip", file_path=download_path)
         else:
-            download_button = st.download_button("Download Split Files (ZIP)", data=split_result, file_name="split_sheets.
+            download_button = st.download_button("Download Split Files (ZIP)", data=split_result, file_name="split_sheets.zip")
+
+# Merge Excel Files
+elif option == 'Merge Excel Files':
+    uploaded_files = st.file_uploader("Upload multiple Excel files", type=["xlsx"], accept_multiple_files=True)
+    if uploaded_files:
+        # Use st.empty() to create a space for the loading icon
+        loading_icon = st.empty()
+        loading_icon.markdown("**Processing...** (Please wait)")
+
+        merged_result = merge_excels(uploaded_files)
+        loading_icon.empty()  # Clear the loading icon after processing
+
+        # Get user-defined download path
+        download_path = st.text_input("Enter Download Path (optional)", key="download_path")
+
+        # Add the download button after processing is complete
+        if download_path:
+            download_button = st.download_button("Download Merged File", data=merged_result, file_name="merged_file.xlsx", file_path=download_path)
+        else:
+            download_button = st.download_button("Download Merged File", data=merged_result, file_name="merged_file.xlsx")
