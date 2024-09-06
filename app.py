@@ -5,6 +5,7 @@ import zipfile
 import openpyxl
 from openpyxl import load_workbook
 import hashlib
+import os
 
 st.title('Excel Wizard')
 
@@ -93,10 +94,17 @@ if option == 'Split Excel by Sheets':
         download_path = st.text_input("Enter Download Path (optional)", key="download_path")
 
         # Add the download button after processing is complete
+        download_button = st.download_button("Download Split Files (ZIP)", data=split_result, file_name="split_sheets.zip")
+
+        # Save the downloaded data to the specified path (if provided)
         if download_path:
-            download_button = st.download_button("Download Split Files (ZIP)", data=split_result, file_name="split_sheets.zip", file_path=download_path)
-        else:
-            download_button = st.download_button("Download Split Files (ZIP)", data=split_result, file_name="split_sheets.zip")
+            try:
+                os.makedirs(download_path, exist_ok=True)  # Create the directory if it doesn't exist
+                with open(os.path.join(download_path, "split_sheets.zip"), 'wb') as f:
+                    f.write(split_result)
+                st.success("Split files saved to the specified path.")
+            except Exception as e:
+                st.error(f"Error saving files to {download_path}: {str(e)}")
 
 # Merge Excel Files
 elif option == 'Merge Excel Files':
@@ -113,7 +121,14 @@ elif option == 'Merge Excel Files':
         download_path = st.text_input("Enter Download Path (optional)", key="download_path")
 
         # Add the download button after processing is complete
+        download_button = st.download_button("Download Merged File", data=merged_result, file_name="merged_file.xlsx")
+
+        # Save the downloaded data to the specified path (if provided)
         if download_path:
-            download_button = st.download_button("Download Merged File", data=merged_result, file_name="merged_file.xlsx", file_path=download_path)
-        else:
-            download_button = st.download_button("Download Merged File", data=merged_result, file_name="merged_file.xlsx")
+            try:
+                os.makedirs(download_path, exist_ok=True)  # Create the directory if it doesn't exist
+                with open(os.path.join(download_path, "merged_file.xlsx"), 'wb') as f:
+                    f.write(merged_result)
+                st.success("Merged file saved to the specified path.")
+            except Exception as e:
+                st.error(f"Error saving file to {download_path}: {str(e)}")
