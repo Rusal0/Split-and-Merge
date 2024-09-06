@@ -100,7 +100,7 @@ if option == 'Split Excel by Sheets':
                 os.makedirs(os.path.dirname(full_file_path))
 
             with open(full_file_path, "wb") as f:
-                f.write(split_result)
+                f.write(split_result.getvalue())  # Extract bytes from BytesIO object
 
             st.success(f"File downloaded to: {full_file_path}")
         else:
@@ -133,7 +133,7 @@ elif option == 'Merge Excel Files':
                 os.makedirs(os.path.dirname(full_file_path))
 
             with open(full_file_path, "wb") as f:
-                f.write(merged_result)
+                f.write(merged_result.getvalue())  # Extract bytes from BytesIO object
 
             st.success(f"File downloaded to: {full_file_path}")
         else:
