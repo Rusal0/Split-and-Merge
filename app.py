@@ -78,9 +78,6 @@ def merge_excels(files):
 st.sidebar.title("Excel Wizard Options")
 option = st.sidebar.radio("Choose an action", ('Split Excel by Sheets', 'Merge Excel Files'))
 
-# Download location input
-download_location = st.text_input("Enter download location:")
-
 # Split Excel File
 if option == 'Split Excel by Sheets':
     uploaded_file = st.file_uploader("Upload an Excel file", type=["xlsx"])
@@ -92,37 +89,11 @@ if option == 'Split Excel by Sheets':
         split_result = split_excel(uploaded_file)
         loading_icon.empty()  # Clear the loading icon after processing
 
-        # Define download path based on user input or default
-        if download_location:
-            download_path = download_location + "/split_sheets.zip"
+        # Get user-defined download path
+        download_path = st.text_input("Enter Download Path (optional)", key="download_path")
+
+        # Add the download button after processing is complete
+        if download_path:
+            download_button = st.download_button("Download Split Files (ZIP)", data=split_result, file_name="split_sheets.zip", file_path=download_path)
         else:
-            download_path = "split_sheets.zip"
-
-        # Automatically download the file to the specified location
-        with open(download_path, 'wb') as f:
-            f.write(split_result)
-
-        st.success("File downloaded successfully to: " + download_path)
-
-# Merge Excel Files
-elif option == 'Merge Excel Files':
-    uploaded_files = st.file_uploader("Upload multiple Excel files", type=["xlsx"], accept_multiple_files=True)
-    if uploaded_files:
-        # Use st.empty() to create a space for the loading icon
-        loading_icon = st.empty()
-        loading_icon.markdown("**Processing...** (Please wait)")
-
-        merged_result = merge_excels(uploaded_files)
-        loading_icon.empty()  # Clear the loading icon after processing
-
-        # Define download path based on user input or default
-        if download_location:
-            download_path = download_location + "/merged_file.xlsx"
-        else:
-            download_path = "merged_file.xlsx"
-
-        # Automatically download the file to the specified location
-        with open(download_path, 'wb') as f:
-            f.write(merged_result)
-
-        st.success("File downloaded successfully to: " + download_path)
+            download_button = st.download_button("Download Split Files (ZIP)", data=split_result, file_name
