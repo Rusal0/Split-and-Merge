@@ -94,6 +94,11 @@ if option == 'Split Excel by Sheets':
         if download_path:
             # Use user-provided path
             full_file_path = os.path.join(download_path, "split_sheets.zip")
+
+            # Create the directory if it doesn't exist
+            if not os.path.exists(os.path.dirname(full_file_path)):
+                os.makedirs(os.path.dirname(full_file_path))
+
             with open(full_file_path, "wb") as f:
                 f.write(split_result)
 
@@ -122,6 +127,11 @@ elif option == 'Merge Excel Files':
         if download_path:
             # Use user-provided path
             full_file_path = os.path.join(download_path, "merged_file.xlsx")
+
+            # Create the directory if it doesn't exist
+            if not os.path.exists(os.path.dirname(full_file_path)):
+                os.makedirs(os.path.dirname(full_file_path))
+
             with open(full_file_path, "wb") as f:
                 f.write(merged_result)
 
